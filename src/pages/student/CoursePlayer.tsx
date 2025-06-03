@@ -77,7 +77,7 @@ const CoursePlayer = () => {
     return match ? match[1] : null;
   };
 
-  const videoId = getYouTubeVideoId(currentVideo.youtubeUrl);
+  const youtubeVideoId = getYouTubeVideoId(currentVideo.youtubeUrl);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,9 +88,9 @@ const CoursePlayer = () => {
             <Card>
               <CardContent className="p-0">
                 <div className="aspect-video bg-black rounded-t-lg">
-                  {videoId ? (
+                  {youtubeVideoId ? (
                     <iframe
-                      src={`https://www.youtube.com/embed/${videoId}`}
+                      src={`https://www.youtube.com/embed/${youtubeVideoId}`}
                       className="w-full h-full rounded-t-lg"
                       allowFullScreen
                       title={currentVideo.title}
