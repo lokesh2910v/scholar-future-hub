@@ -38,6 +38,12 @@ import AddVideo from "./pages/educator/AddVideo";
 import EducatorCourseDetail from "./pages/educator/CourseDetail";
 import EducatorStudentAnalytics from "./pages/educator/StudentAnalytics";
 
+// Admin Profile Page
+import AdminProfile from "./pages/admin/Profile";
+
+// Educator Profile Page
+import EducatorProfile from "./pages/educator/Profile";
+
 const queryClient = new QueryClient();
 
 // Protected Route Component
@@ -172,6 +178,11 @@ const AppContent = () => {
               <CourseDetail />
             </ProtectedRoute>
           } />
+          <Route path="/admin/profile" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminProfile />
+            </ProtectedRoute>
+          } />
           
           {/* Educator Routes */}
           <Route path="/educator" element={
@@ -207,6 +218,11 @@ const AppContent = () => {
           <Route path="/educator/students" element={
             <ProtectedRoute allowedRoles={['educator']}>
               <EducatorStudentAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/profile" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <EducatorProfile />
             </ProtectedRoute>
           } />
           
