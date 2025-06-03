@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,13 +10,21 @@ import { useToast } from '@/hooks/use-toast';
 
 const CoursePlayer = () => {
   const { courseId, videoId } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [watchedVideos, setWatchedVideos] = useState<string[]>(['v1']);
   
   const course = mockCourses.find(c => c.id === courseId);
   
   if (!course) {
-    return <div>Course not found</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Course not found</h2>
+          <Button onClick={() => navigate('/courses')}>Browse Courses</Button>
+        </div>
+      </div>
+    );
   }
 
   // Get all videos in order
@@ -30,7 +38,14 @@ const CoursePlayer = () => {
   const prevVideo = allVideos[currentVideoIndex - 1];
 
   if (!currentVideo) {
-    return <div>Video not found</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Video not found</h2>
+          <Button onClick={() => navigate(`/course/${courseId}`)}>Back to Course</Button>
+        </div>
+      </div>
+    );
   }
 
   const handleMarkAsWatched = () => {
@@ -43,7 +58,26 @@ const CoursePlayer = () => {
     }
   };
 
+  const handleNavigation = (video: any) => {
+    if (video) {
+      navigate(`/course/${courseId}/video/${video.id}`);
+    }
+  };
+
+  const handleVideoClick = (video: any) => {
+    navigate(`/course/${courseId}/video/${video.id}`);
+  };
+
   const isWatched = watchedVideos.includes(currentVideo.id);
+
+  // Extract YouTube video ID from URL
+  const getYouTubeVideoId = (url: string) => {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  const videoId = getYouTubeVideoId(currentVideo.youtubeUrl);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -54,12 +88,18 @@ const CoursePlayer = () => {
             <Card>
               <CardContent className="p-0">
                 <div className="aspect-video bg-black rounded-t-lg">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${currentVideo.youtubeUrl.split('v=')[1]}`}
-                    className="w-full h-full rounded-t-lg"
-                    allowFullScreen
-                    title={currentVideo.title}
-                  />
+                  {videoId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}`}
+                      className="w-full h-full rounded-t-lg"
+                      allowFullScreen
+                      title={currentVideo.title}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-white">
+                      <p>Invalid video URL</p>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6">
@@ -103,6 +143,7 @@ const CoursePlayer = () => {
                       variant="outline" 
                       disabled={!prevVideo}
                       className="flex items-center"
+                      onClick={() => handleNavigation(prevVideo)}
                     >
                       <ChevronLeft className="w-4 h-4 mr-1" />
                       Previous
@@ -111,6 +152,7 @@ const CoursePlayer = () => {
                     <Button 
                       disabled={!nextVideo}
                       className="flex items-center"
+                      onClick={() => handleNavigation(nextVideo)}
                     >
                       Next
                       <ChevronRight className="w-4 h-4 ml-1" />
@@ -144,6 +186,7 @@ const CoursePlayer = () => {
                             className={`p-4 cursor-pointer transition-colors ${
                               isCurrentVideo ? 'bg-blue-50 border-r-4 border-blue-500' : 'hover:bg-gray-50'
                             }`}
+                            onClick={() => handleVideoClick(video)}
                           >
                             <div className="flex items-center space-x-3">
                               {isVideoWatched ? (

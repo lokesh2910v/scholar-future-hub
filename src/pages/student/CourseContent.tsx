@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -10,16 +10,29 @@ import { mockCourses } from '@/data/mockData';
 
 const CourseContent = () => {
   const { courseId } = useParams();
+  const navigate = useNavigate();
   const [watchedVideos, setWatchedVideos] = useState<string[]>(['v1']);
   
   const course = mockCourses.find(c => c.id === courseId);
   
   if (!course) {
-    return <div>Course not found</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Course not found</h2>
+          <p className="text-gray-600 mb-4">The course you're looking for doesn't exist.</p>
+          <Button onClick={() => navigate('/courses')}>Browse Courses</Button>
+        </div>
+      </div>
+    );
   }
 
   const totalVideos = course.modules.reduce((acc, module) => acc + module.videos.length, 0);
-  const progress = (watchedVideos.length / totalVideos) * 100;
+  const progress = totalVideos > 0 ? (watchedVideos.length / totalVideos) * 100 : 0;
+
+  const handleWatchVideo = (videoId: string) => {
+    navigate(`/course/${courseId}/video/${videoId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -56,7 +69,7 @@ const CourseContent = () => {
 
         {/* Course Modules */}
         <div className="space-y-6">
-          {course.modules.map((module, moduleIndex) => (
+          {course.modules.length > 0 ? course.modules.map((module, moduleIndex) => (
             <Card key={module.id}>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
@@ -106,6 +119,7 @@ const CourseContent = () => {
                           variant={isWatched ? "outline" : "default"}
                           disabled={isLocked}
                           size="sm"
+                          onClick={() => !isLocked && handleWatchVideo(video.id)}
                         >
                           {isWatched ? 'Rewatch' : isLocked ? 'Locked' : 'Watch'}
                         </Button>
@@ -115,7 +129,14 @@ const CourseContent = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )) : (
+            <Card>
+              <CardContent className="text-center py-16">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No modules available</h3>
+                <p className="text-gray-600">This course doesn't have any modules yet.</p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

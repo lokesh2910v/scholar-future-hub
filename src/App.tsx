@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,6 +33,9 @@ import CourseDetail from "./pages/admin/CourseDetail";
 // Educator Pages
 import AddCourse from "./pages/educator/AddCourse";
 import MyCourses from "./pages/educator/MyCourses";
+import AddModule from "./pages/educator/AddModule";
+import AddVideo from "./pages/educator/AddVideo";
+import CourseDetail as EducatorCourseDetail from "./pages/educator/CourseDetail";
 import EducatorStudentAnalytics from "./pages/educator/StudentAnalytics";
 
 const queryClient = new QueryClient();
@@ -185,6 +187,21 @@ const AppContent = () => {
           <Route path="/educator/courses" element={
             <ProtectedRoute allowedRoles={['educator']}>
               <MyCourses />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/courses/:courseId" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <EducatorCourseDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/courses/:courseId/add-module" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <AddModule />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/courses/:courseId/modules/:moduleId/add-video" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <AddVideo />
             </ProtectedRoute>
           } />
           <Route path="/educator/students" element={
