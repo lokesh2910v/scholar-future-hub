@@ -22,13 +22,19 @@ const AddCourse = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Generate a mock course ID
+    const newCourseId = `course_${Date.now()}`;
+    
     // Here you would typically submit to backend
+    console.log('Creating course:', courseData);
+    
     toast({
       title: "Course created!",
-      description: "Your course has been submitted for review.",
+      description: "Your course has been created. Now add modules and videos.",
     });
     
-    navigate('/educator/courses');
+    // Redirect to course detail page to add modules
+    navigate(`/educator/courses/${newCourseId}`);
   };
 
   const handleChange = (field: string, value: string) => {

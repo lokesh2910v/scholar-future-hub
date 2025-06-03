@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { PlayCircle, Clock, CheckCircle, Lock } from 'lucide-react';
+import { PlayCircle, Clock, CheckCircle, Lock, ArrowLeft } from 'lucide-react';
 import { mockCourses } from '@/data/mockData';
 
 const CourseContent = () => {
@@ -34,9 +34,28 @@ const CourseContent = () => {
     navigate(`/course/${courseId}/video/${videoId}`);
   };
 
+  const handleStartCourse = () => {
+    if (course.modules.length > 0 && course.modules[0].videos.length > 0) {
+      const firstVideo = course.modules[0].videos[0];
+      navigate(`/course/${courseId}/video/${firstVideo.id}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/my-learning')}
+            className="flex items-center"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to My Learning
+          </Button>
+        </div>
+
         {/* Course Header */}
         <div className="mb-8">
           <div className="flex items-start space-x-6">
@@ -56,13 +75,17 @@ const CourseContent = () => {
                 <Badge variant="outline">{totalVideos} videos</Badge>
               </div>
 
-              <div className="mb-4">
+              <div className="mb-6">
                 <div className="flex justify-between text-sm mb-1">
                   <span>Course Progress</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
                 <Progress value={progress} className="h-3" />
               </div>
+
+              <Button onClick={handleStartCourse} size="lg">
+                {progress > 0 ? 'Continue Learning' : 'Start Course'}
+              </Button>
             </div>
           </div>
         </div>
@@ -90,10 +113,11 @@ const CourseContent = () => {
                     return (
                       <div 
                         key={video.id}
-                        className={`flex items-center justify-between p-4 rounded-lg border ${
+                        className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-colors ${
                           isWatched ? 'bg-green-50 border-green-200' : 
-                          isLocked ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200'
+                          isLocked ? 'bg-gray-50 border-gray-200 cursor-not-allowed' : 'bg-white border-gray-200 hover:bg-gray-50'
                         }`}
+                        onClick={() => !isLocked && handleWatchVideo(video.id)}
                       >
                         <div className="flex items-center space-x-3">
                           {isWatched ? (
@@ -119,7 +143,10 @@ const CourseContent = () => {
                           variant={isWatched ? "outline" : "default"}
                           disabled={isLocked}
                           size="sm"
-                          onClick={() => !isLocked && handleWatchVideo(video.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isLocked) handleWatchVideo(video.id);
+                          }}
                         >
                           {isWatched ? 'Rewatch' : isLocked ? 'Locked' : 'Watch'}
                         </Button>
@@ -133,7 +160,7 @@ const CourseContent = () => {
             <Card>
               <CardContent className="text-center py-16">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No modules available</h3>
-                <p className="text-gray-600">This course doesn't have any modules yet.</p>
+                <p className="text-gray-600">This course doesn't have any modules yet. Check back later!</p>
               </CardContent>
             </Card>
           )}

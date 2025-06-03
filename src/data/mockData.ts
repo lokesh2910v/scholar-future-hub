@@ -73,6 +73,35 @@ export const mockCourses: Course[] = [
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '15:20',
             moduleId: 'm1'
+          },
+          {
+            id: 'v3',
+            title: 'Creating Your First Component',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '12:45',
+            moduleId: 'm1'
+          }
+        ]
+      },
+      {
+        id: 'm2',
+        title: 'Advanced React Concepts',
+        description: 'Learn hooks, context, and advanced patterns',
+        courseId: '1',
+        videos: [
+          {
+            id: 'v4',
+            title: 'Understanding React Hooks',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '18:30',
+            moduleId: 'm2'
+          },
+          {
+            id: 'v5',
+            title: 'Context API Deep Dive',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '22:15',
+            moduleId: 'm2'
           }
         ]
       }
@@ -90,7 +119,30 @@ export const mockCourses: Course[] = [
     students: 856,
     duration: '8 hours',
     approved: true,
-    modules: []
+    modules: [
+      {
+        id: 'm3',
+        title: 'ES6 Fundamentals',
+        description: 'Learn the core ES6 features',
+        courseId: '2',
+        videos: [
+          {
+            id: 'v6',
+            title: 'Arrow Functions and Template Literals',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '14:20',
+            moduleId: 'm3'
+          },
+          {
+            id: 'v7',
+            title: 'Destructuring and Spread Operator',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '16:45',
+            moduleId: 'm3'
+          }
+        ]
+      }
+    ]
   },
   {
     id: '3',
@@ -104,7 +156,23 @@ export const mockCourses: Course[] = [
     students: 643,
     duration: '15 hours',
     approved: false,
-    modules: []
+    modules: [
+      {
+        id: 'm4',
+        title: 'Design Principles',
+        description: 'Understanding fundamental design concepts',
+        courseId: '3',
+        videos: [
+          {
+            id: 'v8',
+            title: 'Color Theory Basics',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '20:30',
+            moduleId: 'm4'
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -116,7 +184,7 @@ export const mockEnrollments: Enrollment[] = [
     enrolledAt: new Date('2024-01-15'),
     progress: 65,
     completed: false,
-    watchedVideos: ['v1']
+    watchedVideos: ['v1', 'v2']
   },
   {
     id: 'e2',
@@ -125,7 +193,7 @@ export const mockEnrollments: Enrollment[] = [
     enrolledAt: new Date('2024-02-01'),
     progress: 100,
     completed: true,
-    watchedVideos: []
+    watchedVideos: ['v6', 'v7']
   }
 ];
 

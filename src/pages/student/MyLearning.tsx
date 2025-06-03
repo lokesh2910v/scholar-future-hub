@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Clock, CheckCircle } from 'lucide-react';
+import { BookOpen, Clock, CheckCircle, ArrowRight } from 'lucide-react';
 import { mockCourses, mockEnrollments } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const MyLearning = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   
   // Mock enrolled courses for current user
   const enrolledCourses = mockEnrollments.map(enrollment => {
@@ -19,6 +21,14 @@ const MyLearning = () => {
 
   const currentCourses = enrolledCourses.filter(course => !course.completed);
   const completedCourses = enrolledCourses.filter(course => course.completed);
+
+  const handleContinueLearning = (courseId: string) => {
+    navigate(`/course/${courseId}`);
+  };
+
+  const handleReviewCourse = (courseId: string) => {
+    navigate(`/course/${courseId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -71,7 +81,13 @@ const MyLearning = () => {
                       </div>
                     </div>
 
-                    <Button className="w-full">Continue Learning</Button>
+                    <Button 
+                      className="w-full" 
+                      onClick={() => handleContinueLearning(course.id)}
+                    >
+                      Continue Learning
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -83,7 +99,7 @@ const MyLearning = () => {
               <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No current courses</h3>
               <p className="text-gray-600 mb-4">Start learning by enrolling in a course</p>
-              <Button>Browse Courses</Button>
+              <Button onClick={() => navigate('/courses')}>Browse Courses</Button>
             </div>
           )}
         </div>
@@ -127,7 +143,13 @@ const MyLearning = () => {
                       </div>
                     </div>
 
-                    <Button variant="outline" className="w-full">Review Course</Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => handleReviewCourse(course.id)}
+                    >
+                      Review Course
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
