@@ -35,7 +35,7 @@ import AddCourse from "./pages/educator/AddCourse";
 import MyCourses from "./pages/educator/MyCourses";
 import AddModule from "./pages/educator/AddModule";
 import AddVideo from "./pages/educator/AddVideo";
-import CourseDetail as EducatorCourseDetail from "./pages/educator/CourseDetail";
+import EducatorCourseDetail from "./pages/educator/CourseDetail";
 import EducatorStudentAnalytics from "./pages/educator/StudentAnalytics";
 
 const queryClient = new QueryClient();
