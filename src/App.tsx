@@ -16,6 +16,26 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import EducatorDashboard from "./pages/educator/Dashboard";
 import NotFound from "./pages/NotFound";
 
+// Student Pages
+import MyLearning from "./pages/student/MyLearning";
+import CourseContent from "./pages/student/CourseContent";
+import CoursePlayer from "./pages/student/CoursePlayer";
+import Cart from "./pages/student/Cart";
+import StudentProfile from "./pages/student/Profile";
+
+// Admin Pages
+import StudentAnalytics from "./pages/admin/StudentAnalytics";
+import StudentDetail from "./pages/admin/StudentDetail";
+import EducatorAnalytics from "./pages/admin/EducatorAnalytics";
+import EducatorDetail from "./pages/admin/EducatorDetail";
+import CourseAnalytics from "./pages/admin/CourseAnalytics";
+import CourseDetail from "./pages/admin/CourseDetail";
+
+// Educator Pages
+import AddCourse from "./pages/educator/AddCourse";
+import MyCourses from "./pages/educator/MyCourses";
+import EducatorStudentAnalytics from "./pages/educator/StudentAnalytics";
+
 const queryClient = new QueryClient();
 
 // Protected Route Component
@@ -88,6 +108,31 @@ const AppContent = () => {
               <StudentDashboard />
             </ProtectedRoute>
           } />
+          <Route path="/my-learning" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <MyLearning />
+            </ProtectedRoute>
+          } />
+          <Route path="/course/:courseId" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <CourseContent />
+            </ProtectedRoute>
+          } />
+          <Route path="/course/:courseId/video/:videoId" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <CoursePlayer />
+            </ProtectedRoute>
+          } />
+          <Route path="/cart" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <Cart />
+            </ProtectedRoute>
+          } />
+          <Route path="/student/profile" element={
+            <ProtectedRoute allowedRoles={['student']}>
+              <StudentProfile />
+            </ProtectedRoute>
+          } />
           
           {/* Admin Routes */}
           <Route path="/admin" element={
@@ -95,11 +140,56 @@ const AppContent = () => {
               <AdminDashboard />
             </ProtectedRoute>
           } />
+          <Route path="/admin/students" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <StudentAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/students/:studentId" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <StudentDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/educators" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <EducatorAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/educators/:educatorId" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <EducatorDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/courses" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <CourseAnalytics />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/courses/:courseId" element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <CourseDetail />
+            </ProtectedRoute>
+          } />
           
           {/* Educator Routes */}
           <Route path="/educator" element={
             <ProtectedRoute allowedRoles={['educator']}>
               <EducatorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/add-course" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <AddCourse />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/courses" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <MyCourses />
+            </ProtectedRoute>
+          } />
+          <Route path="/educator/students" element={
+            <ProtectedRoute allowedRoles={['educator']}>
+              <EducatorStudentAnalytics />
             </ProtectedRoute>
           } />
           
