@@ -10,6 +10,8 @@ export interface Course {
   rating: number;
   students: number;
   duration: string;
+  category: string;
+  level: string;
   modules: Module[];
   approved: boolean;
 }
@@ -52,6 +54,8 @@ export const mockCourses: Course[] = [
     rating: 4.8,
     students: 1247,
     duration: '12 hours',
+    category: 'Technology',
+    level: 'Intermediate',
     approved: true,
     modules: [
       {
@@ -118,6 +122,8 @@ export const mockCourses: Course[] = [
     rating: 4.9,
     students: 856,
     duration: '8 hours',
+    category: 'Technology',
+    level: 'Advanced',
     approved: true,
     modules: [
       {
@@ -155,6 +161,8 @@ export const mockCourses: Course[] = [
     rating: 4.7,
     students: 643,
     duration: '15 hours',
+    category: 'Design',
+    level: 'Beginner',
     approved: false,
     modules: [
       {
