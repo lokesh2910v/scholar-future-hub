@@ -1,15 +1,16 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ArrowLeft, BookOpen, Users, Star, Calendar, TrendingUp } from 'lucide-react';
+import { ArrowLeft, BookOpen, Users, Star, Calendar, TrendingUp, UserMinus, UserX } from 'lucide-react';
 import { mockCourses } from '@/data/mockData';
+import { useToast } from '@/hooks/use-toast';
 
 const EducatorDetail = () => {
   const { educatorId } = useParams();
+  const { toast } = useToast();
   
   // Mock educator data
   const educator = {
@@ -28,6 +29,21 @@ const EducatorDetail = () => {
   // Get educator's courses
   const educatorCourses = mockCourses.filter(course => course.instructorId === educatorId);
 
+  const handleMakeInactive = () => {
+    toast({
+      title: "Educator deactivated",
+      description: `${educator.name} has been made inactive.`,
+    });
+  };
+
+  const handleRemoveEducator = () => {
+    toast({
+      title: "Educator removed",
+      description: `${educator.name} has been removed from the platform.`,
+      variant: "destructive",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -42,24 +58,48 @@ const EducatorDetail = () => {
           
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-center space-x-6">
-                <Avatar className="w-20 h-20">
-                  <AvatarImage src={educator.avatar} />
-                  <AvatarFallback className="text-xl">{educator.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                
-                <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">{educator.name}</h1>
-                  <p className="text-gray-600 mb-4">{educator.email}</p>
-                  <p className="text-gray-700 mb-4">{educator.bio}</p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-6">
+                  <Avatar className="w-20 h-20">
+                    <AvatarImage src={educator.avatar} />
+                    <AvatarFallback className="text-xl">{educator.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
                   
-                  <div className="flex items-center space-x-6 text-sm text-gray-500">
-                    <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
-                      Joined {new Date(educator.joinedAt).toLocaleDateString()}
+                  <div className="flex-1">
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">{educator.name}</h1>
+                    <p className="text-gray-600 mb-4">{educator.email}</p>
+                    <p className="text-gray-700 mb-4">{educator.bio}</p>
+                    
+                    <div className="flex items-center space-x-6 text-sm text-gray-500">
+                      <div className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        Joined {new Date(educator.joinedAt).toLocaleDateString()}
+                      </div>
+                      <Badge variant="default">{educator.status}</Badge>
                     </div>
-                    <Badge variant="default">{educator.status}</Badge>
                   </div>
+                </div>
+
+                {/* Management Actions */}
+                <div className="flex gap-2">
+                  {educator.status === 'active' && (
+                    <Button 
+                      variant="outline"
+                      onClick={handleMakeInactive}
+                      className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                    >
+                      <UserX className="w-4 h-4 mr-2" />
+                      Make Inactive
+                    </Button>
+                  )}
+                  <Button 
+                    variant="outline"
+                    onClick={handleRemoveEducator}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <UserMinus className="w-4 h-4 mr-2" />
+                    Remove Educator
+                  </Button>
                 </div>
               </div>
             </CardContent>
@@ -137,9 +177,7 @@ const EducatorDetail = () => {
                               <h3 className="font-semibold text-gray-900">{course.title}</h3>
                               <p className="text-sm text-gray-600">{course.description}</p>
                             </div>
-                            <Badge variant={course.approved ? "default" : "secondary"}>
-                              {course.approved ? 'Approved' : 'Pending'}
-                            </Badge>
+                            <Badge variant="default">Published</Badge>
                           </div>
                           
                           <div className="grid grid-cols-3 gap-4 mt-4 text-sm">

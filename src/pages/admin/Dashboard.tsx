@@ -11,12 +11,12 @@ const AdminDashboard = () => {
     totalStudents: mockStudents.length,
     totalEducators: 15, // Mock data
     totalCourses: mockCourses.length,
-    pendingApprovals: mockCourses.filter(c => !c.approved).length
+    activeEducators: 12 // Mock data
   };
 
   const recentActivity = [
     { id: 1, action: 'New student enrolled', description: 'John Doe joined React Development course', time: '2 hours ago' },
-    { id: 2, action: 'Course submitted for review', description: 'UI/UX Design Fundamentals needs approval', time: '4 hours ago' },
+    { id: 2, action: 'New course published', description: 'UI/UX Design Fundamentals is now live', time: '4 hours ago' },
     { id: 3, action: 'New educator registered', description: 'Sarah Wilson created an account', time: '1 day ago' },
   ];
 
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalEducators}</div>
               <p className="text-xs text-muted-foreground">
-                +3 new this month
+                {stats.activeEducators} active educators
               </p>
             </CardContent>
           </Card>
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalCourses}</div>
               <p className="text-xs text-muted-foreground">
-                {stats.pendingApprovals} pending approval
+                Published courses
               </p>
             </CardContent>
           </Card>
@@ -118,11 +118,9 @@ const AdminDashboard = () => {
                   <Link to="/admin/courses">
                     <span className="flex items-center">
                       <BookOpen className="w-4 h-4 mr-2" />
-                      Review Courses
+                      View Courses
                     </span>
-                    <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">
-                      {stats.pendingApprovals}
-                    </span>
+                    <Eye className="w-4 h-4" />
                   </Link>
                 </Button>
               </CardContent>

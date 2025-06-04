@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { Users, BookOpen, Star, TrendingUp, Plus } from 'lucide-react';
+import { Users, BookOpen, Star, TrendingUp, Plus, UserMinus, UserX } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock educator data
 const mockEducators = [
@@ -51,23 +52,39 @@ const mockEducators = [
     rating: 4.4,
     revenue: 18900,
     joinedDate: '2023-06-10',
-    status: 'pending'
+    status: 'inactive'
   }
 ];
 
 const EducatorAnalytics = () => {
+  const { toast } = useToast();
   const totalEducators = mockEducators.length;
   const activeEducators = mockEducators.filter(e => e.status === 'active').length;
   const totalRevenue = mockEducators.reduce((sum, e) => sum + e.revenue, 0);
   const avgRating = mockEducators.reduce((sum, e) => sum + e.rating, 0) / mockEducators.length;
+
+  const handleMakeInactive = (educatorId: string, educatorName: string) => {
+    toast({
+      title: "Educator deactivated",
+      description: `${educatorName} has been made inactive.`,
+    });
+  };
+
+  const handleRemoveEducator = (educatorId: string, educatorName: string) => {
+    toast({
+      title: "Educator removed",
+      description: `${educatorName} has been removed from the platform.`,
+      variant: "destructive",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Educator Analytics</h1>
-            <p className="text-gray-600">Monitor and manage platform educators</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Educator Management</h1>
+            <p className="text-gray-600">Manage platform educators and their access</p>
           </div>
           <Button asChild>
             <Link to="/admin/educators/add">
@@ -174,11 +191,31 @@ const EducatorAnalytics = () => {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Button variant="outline" size="sm" asChild>
-                        <Link to={`/admin/educators/${educator.id}`}>
-                          View Details
-                        </Link>
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link to={`/admin/educators/${educator.id}`}>
+                            View Details
+                          </Link>
+                        </Button>
+                        {educator.status === 'active' && (
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleMakeInactive(educator.id, educator.name)}
+                            className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                          >
+                            <UserX className="w-4 h-4" />
+                          </Button>
+                        )}
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleRemoveEducator(educator.id, educator.name)}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <UserMinus className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
