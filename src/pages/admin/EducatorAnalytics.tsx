@@ -1,130 +1,136 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Eye, Search, Filter, Users, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Users, BookOpen, Star, TrendingUp, Plus } from 'lucide-react';
+
+// Mock educator data
+const mockEducators = [
+  {
+    id: '1',
+    name: 'Sarah Johnson',
+    email: 'sarah.johnson@example.com',
+    courses: 5,
+    students: 1250,
+    rating: 4.8,
+    revenue: 45600,
+    joinedDate: '2023-01-15',
+    status: 'active'
+  },
+  {
+    id: '2', 
+    name: 'Michael Chen',
+    email: 'michael.chen@example.com',
+    courses: 3,
+    students: 890,
+    rating: 4.6,
+    revenue: 32400,
+    joinedDate: '2023-03-22',
+    status: 'active'
+  },
+  {
+    id: '3',
+    name: 'Emily Rodriguez',
+    email: 'emily.rodriguez@example.com',
+    courses: 7,
+    students: 2100,
+    rating: 4.9,
+    revenue: 78900,
+    joinedDate: '2022-11-08',
+    status: 'active'
+  },
+  {
+    id: '4',
+    name: 'David Kim',
+    email: 'david.kim@example.com',
+    courses: 2,
+    students: 450,
+    rating: 4.4,
+    revenue: 18900,
+    joinedDate: '2023-06-10',
+    status: 'pending'
+  }
+];
 
 const EducatorAnalytics = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  // Mock educator data
-  const educators = [
-    {
-      id: 'edu1',
-      name: 'Sarah Johnson',
-      email: 'sarah@example.com',
-      courses: 3,
-      students: 892,
-      rating: 4.8,
-      joinedAt: '2023-06-15',
-      status: 'active'
-    },
-    {
-      id: 'edu2',
-      name: 'Mike Chen',
-      email: 'mike@example.com',
-      courses: 2,
-      students: 567,
-      rating: 4.9,
-      joinedAt: '2023-08-20',
-      status: 'active'
-    },
-    {
-      id: 'edu3',
-      name: 'Emily Davis',
-      email: 'emily@example.com',
-      courses: 1,
-      students: 234,
-      rating: 4.7,
-      joinedAt: '2023-11-10',
-      status: 'pending'
-    }
-  ];
-
-  const filteredEducators = educators.filter(educator =>
-    educator.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    educator.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const totalEducators = mockEducators.length;
+  const activeEducators = mockEducators.filter(e => e.status === 'active').length;
+  const totalRevenue = mockEducators.reduce((sum, e) => sum + e.revenue, 0);
+  const avgRating = mockEducators.reduce((sum, e) => sum + e.rating, 0) / mockEducators.length;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Educator Analytics</h1>
-          <p className="text-gray-600">Manage and view educator performance and courses</p>
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Educator Analytics</h1>
+            <p className="text-gray-600">Monitor and manage platform educators</p>
+          </div>
+          <Button asChild>
+            <Link to="/admin/educators/add">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Educator
+            </Link>
+          </Button>
         </div>
 
-        {/* Stats Cards */}
+        {/* Overview Stats */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Educators</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{educators.length}</div>
-              <p className="text-xs text-muted-foreground">+2 from last month</p>
+              <div className="text-2xl font-bold">{totalEducators}</div>
+              <p className="text-xs text-muted-foreground">
+                +2 from last month
+              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Active Educators</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {educators.filter(e => e.status === 'active').length}
-              </div>
-              <p className="text-xs text-muted-foreground">Currently teaching</p>
+              <div className="text-2xl font-bold">{activeEducators}</div>
+              <p className="text-xs text-muted-foreground">
+                {((activeEducators / totalEducators) * 100).toFixed(1)}% of total
+              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Courses</CardTitle>
+              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {educators.reduce((acc, educator) => acc + educator.courses, 0)}
-              </div>
-              <p className="text-xs text-muted-foreground">Published courses</p>
+              <div className="text-2xl font-bold">${totalRevenue.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">
+                Generated by educators
+              </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg. Rating</CardTitle>
+              <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
+              <Star className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">4.8</div>
-              <p className="text-xs text-muted-foreground">Platform average</p>
+              <div className="text-2xl font-bold">{avgRating.toFixed(1)}</div>
+              <p className="text-xs text-muted-foreground">
+                Platform average
+              </p>
             </CardContent>
           </Card>
         </div>
-
-        {/* Filters and Search */}
-        <Card className="mb-6">
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-center">
-              <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search educators..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <Button variant="outline" className="flex items-center">
-                <Filter className="w-4 h-4 mr-2" />
-                Filters
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Educators Table */}
         <Card>
@@ -135,35 +141,33 @@ const EducatorAnalytics = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Educator Name</TableHead>
-                  <TableHead>Email</TableHead>
+                  <TableHead>Educator</TableHead>
                   <TableHead>Courses</TableHead>
                   <TableHead>Students</TableHead>
                   <TableHead>Rating</TableHead>
-                  <TableHead>Join Date</TableHead>
+                  <TableHead>Revenue</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredEducators.map((educator) => (
+                {mockEducators.map((educator) => (
                   <TableRow key={educator.id}>
-                    <TableCell className="font-medium">{educator.name}</TableCell>
-                    <TableCell>{educator.email}</TableCell>
                     <TableCell>
-                      <div className="flex items-center">
-                        <BookOpen className="w-4 h-4 mr-1" />
-                        {educator.courses}
+                      <div>
+                        <div className="font-medium">{educator.name}</div>
+                        <div className="text-sm text-gray-500">{educator.email}</div>
                       </div>
                     </TableCell>
+                    <TableCell>{educator.courses}</TableCell>
+                    <TableCell>{educator.students}</TableCell>
                     <TableCell>
                       <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-1" />
-                        {educator.students}
+                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
+                        {educator.rating}
                       </div>
                     </TableCell>
-                    <TableCell>⭐ {educator.rating}</TableCell>
-                    <TableCell>{new Date(educator.joinedAt).toLocaleDateString()}</TableCell>
+                    <TableCell>${educator.revenue.toLocaleString()}</TableCell>
                     <TableCell>
                       <Badge variant={educator.status === 'active' ? 'default' : 'secondary'}>
                         {educator.status}
@@ -172,8 +176,7 @@ const EducatorAnalytics = () => {
                     <TableCell>
                       <Button variant="outline" size="sm" asChild>
                         <Link to={`/admin/educators/${educator.id}`}>
-                          <Eye className="w-4 h-4 mr-1" />
-                          View
+                          View Details
                         </Link>
                       </Button>
                     </TableCell>

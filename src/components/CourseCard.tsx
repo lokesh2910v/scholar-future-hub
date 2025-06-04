@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge';
 import { Star, Users, Clock } from 'lucide-react';
 import { Course } from '@/data/mockData';
+import { Link } from 'react-router-dom';
 
 interface CourseCardProps {
   course: Course;
@@ -23,23 +24,27 @@ const CourseCard: React.FC<CourseCardProps> = ({
 }) => {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-      <div className="relative">
-        <img 
-          src={course.image} 
-          alt={course.title}
-          className="w-full h-48 object-cover"
-        />
-        {!course.approved && (
-          <Badge className="absolute top-2 right-2 bg-yellow-500">
-            Pending Review
-          </Badge>
-        )}
-      </div>
+      <Link to={`/course-details/${course.id}`}>
+        <div className="relative cursor-pointer">
+          <img 
+            src={course.image} 
+            alt={course.title}
+            className="w-full h-48 object-cover"
+          />
+          {!course.approved && (
+            <Badge className="absolute top-2 right-2 bg-yellow-500">
+              Pending Review
+            </Badge>
+          )}
+        </div>
+      </Link>
       
       <CardHeader className="pb-3">
-        <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 min-h-[3.5rem]">
-          {course.title}
-        </h3>
+        <Link to={`/course-details/${course.id}`}>
+          <h3 className="text-lg font-semibold text-gray-900 line-clamp-2 min-h-[3.5rem] hover:text-blue-600 cursor-pointer">
+            {course.title}
+          </h3>
+        </Link>
         <p className="text-sm text-gray-600">by {course.instructor}</p>
       </CardHeader>
 
@@ -70,6 +75,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
             <span className="text-2xl font-bold text-blue-600">
               ${course.price}
             </span>
+            <Button variant="outline" size="sm" asChild>
+              <Link to={`/course-details/${course.id}`}>
+                View Details
+              </Link>
+            </Button>
           </div>
           
           {showActions && (

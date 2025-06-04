@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -79,7 +78,7 @@ const CourseDetail = () => {
                   <Plus className="w-4 h-4 mr-2" />
                   Add Module
                 </Button>
-                <Button variant="outline">
+                <Button variant="outline" onClick={() => navigate(`/educator/courses/${courseId}/edit`)}>
                   <Edit className="w-4 h-4 mr-2" />
                   Edit Course
                 </Button>
@@ -102,6 +101,13 @@ const CourseDetail = () => {
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       Add Video
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(`/educator/courses/${courseId}/modules/${module.id}/edit`)}
+                    >
+                      <Edit className="w-4 h-4" />
                     </Button>
                     <Button
                       variant="outline"
