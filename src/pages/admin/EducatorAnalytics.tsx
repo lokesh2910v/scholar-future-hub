@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -7,6 +6,17 @@ import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { Users, BookOpen, Star, TrendingUp, Plus, UserMinus, UserX } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 // Mock educator data
 const mockEducators = [
@@ -58,6 +68,8 @@ const mockEducators = [
 
 const EducatorAnalytics = () => {
   const { toast } = useToast();
+  const [selectedEducator, setSelectedEducator] = useState<{id: string, name: string} | null>(null);
+  
   const totalEducators = mockEducators.length;
   const activeEducators = mockEducators.filter(e => e.status === 'active').length;
   const totalRevenue = mockEducators.reduce((sum, e) => sum + e.revenue, 0);
@@ -66,16 +78,18 @@ const EducatorAnalytics = () => {
   const handleMakeInactive = (educatorId: string, educatorName: string) => {
     toast({
       title: "Educator deactivated",
-      description: `${educatorName} has been made inactive.`,
+      description: `${educatorName} has been made inactive successfully.`,
     });
+    setSelectedEducator(null);
   };
 
   const handleRemoveEducator = (educatorId: string, educatorName: string) => {
     toast({
       title: "Educator removed",
-      description: `${educatorName} has been removed from the platform.`,
+      description: `${educatorName} has been permanently removed from the platform.`,
       variant: "destructive",
     });
+    setSelectedEducator(null);
   };
 
   return (
@@ -198,23 +212,63 @@ const EducatorAnalytics = () => {
                           </Link>
                         </Button>
                         {educator.status === 'active' && (
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            onClick={() => handleMakeInactive(educator.id, educator.name)}
-                            className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
-                          >
-                            <UserX className="w-4 h-4" />
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                              >
+                                <UserX className="w-4 h-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Make Educator Inactive</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to make {educator.name} inactive? This will prevent them from accessing educator features but won't delete their account.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-orange-600 hover:bg-orange-700"
+                                  onClick={() => handleMakeInactive(educator.id, educator.name)}
+                                >
+                                  Make Inactive
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         )}
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleRemoveEducator(educator.id, educator.name)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <UserMinus className="w-4 h-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <UserMinus className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Remove Educator</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to permanently remove {educator.name} from the platform? This action cannot be undone and will delete all their data.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-600 hover:bg-red-700"
+                                onClick={() => handleRemoveEducator(educator.id, educator.name)}
+                              >
+                                Remove Permanently
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </TableCell>
                   </TableRow>

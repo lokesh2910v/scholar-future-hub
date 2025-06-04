@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +8,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowLeft, BookOpen, Users, Star, Calendar, TrendingUp, UserMinus, UserX } from 'lucide-react';
 import { mockCourses } from '@/data/mockData';
 import { useToast } from '@/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const EducatorDetail = () => {
   const { educatorId } = useParams();
@@ -32,14 +44,14 @@ const EducatorDetail = () => {
   const handleMakeInactive = () => {
     toast({
       title: "Educator deactivated",
-      description: `${educator.name} has been made inactive.`,
+      description: `${educator.name} has been made inactive successfully.`,
     });
   };
 
   const handleRemoveEducator = () => {
     toast({
       title: "Educator removed",
-      description: `${educator.name} has been removed from the platform.`,
+      description: `${educator.name} has been permanently removed from the platform.`,
       variant: "destructive",
     });
   };
@@ -83,23 +95,63 @@ const EducatorDetail = () => {
                 {/* Management Actions */}
                 <div className="flex gap-2">
                   {educator.status === 'active' && (
-                    <Button 
-                      variant="outline"
-                      onClick={handleMakeInactive}
-                      className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
-                    >
-                      <UserX className="w-4 h-4 mr-2" />
-                      Make Inactive
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button 
+                          variant="outline"
+                          className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                        >
+                          <UserX className="w-4 h-4 mr-2" />
+                          Make Inactive
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Make Educator Inactive</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Are you sure you want to make {educator.name} inactive? This will prevent them from accessing educator features but won't delete their account.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-orange-600 hover:bg-orange-700"
+                            onClick={handleMakeInactive}
+                          >
+                            Make Inactive
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   )}
-                  <Button 
-                    variant="outline"
-                    onClick={handleRemoveEducator}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                  >
-                    <UserMinus className="w-4 h-4 mr-2" />
-                    Remove Educator
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="outline"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <UserMinus className="w-4 h-4 mr-2" />
+                        Remove Educator
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Remove Educator</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to permanently remove {educator.name} from the platform? This action cannot be undone and will delete all their data.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          className="bg-red-600 hover:bg-red-700"
+                          onClick={handleRemoveEducator}
+                        >
+                          Remove Permanently
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             </CardContent>
