@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Star, Users, Clock, ShoppingBag } from 'lucide-react';
+import { Trash2, Star, Users, Clock, ShoppingBag, Eye } from 'lucide-react';
 import { mockCourses } from '@/data/mockData';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([
     mockCourses[0],
     mockCourses[2]
@@ -22,13 +24,24 @@ const Cart = () => {
     });
   };
 
+  const viewCourseDetails = (courseId: string) => {
+    navigate(`/course-details/${courseId}`);
+  };
+
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
 
   const handleCheckout = () => {
+    // Enroll in all courses in the cart
     toast({
       title: "Checkout successful!",
       description: `You have enrolled in ${cartItems.length} courses.`,
     });
+    
+    // Redirect to My Learning page after checkout
+    setTimeout(() => {
+      navigate('/my-learning');
+    }, 1500);
+    
     setCartItems([]);
   };
 
@@ -47,7 +60,7 @@ const Cart = () => {
             <ShoppingBag className="w-24 h-24 text-gray-400 mx-auto mb-6" />
             <h3 className="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h3>
             <p className="text-gray-600 mb-8">Browse our courses and add them to your cart to get started.</p>
-            <Button size="lg">Browse Courses</Button>
+            <Button size="lg" onClick={() => navigate('/courses')}>Browse Courses</Button>
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-8">
@@ -72,14 +85,24 @@ const Cart = () => {
                             {course.description}
                           </p>
                         </div>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => removeFromCart(course.id)}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => viewCourseDetails(course.id)}
+                            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => removeFromCart(course.id)}
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
 
                       <div className="flex items-center justify-between">

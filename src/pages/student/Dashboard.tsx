@@ -6,11 +6,13 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { BookOpen, Trophy, Clock, TrendingUp } from 'lucide-react';
+import { BookOpen, Trophy, Clock, TrendingUp, Eye } from 'lucide-react';
 import { mockEnrollments, mockCourses } from '@/data/mockData';
+import { useNavigate } from 'react-router-dom';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   
   const userEnrollments = mockEnrollments;
   const enrolledCourses = userEnrollments.map(enrollment => {
@@ -23,6 +25,14 @@ const StudentDashboard = () => {
     completedCourses: userEnrollments.filter(e => e.completed).length,
     inProgress: userEnrollments.filter(e => !e.completed).length,
     totalHours: 25 // Mock data
+  };
+
+  const handleContinueLearning = (courseId: string) => {
+    navigate(`/course/${courseId}`);
+  };
+
+  const handleViewDetails = (courseId: string) => {
+    navigate(`/course-details/${courseId}`);
   };
 
   return (
@@ -130,11 +140,29 @@ const StudentDashboard = () => {
                     </div>
                     <div className="flex flex-col space-y-2">
                       {course.completed ? (
-                        <Badge variant="secondary">Completed</Badge>
+                        <div className="flex gap-2">
+                          <Badge variant="secondary">Completed</Badge>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleViewDetails(course.courseId || course.id)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </div>
                       ) : (
-                        <Button size="sm" asChild>
-                          <Link to={`/course/${course.id}`}>Continue</Link>
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button size="sm" onClick={() => handleContinueLearning(course.courseId || course.id)}>
+                            Continue
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleViewDetails(course.courseId || course.id)}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                        </div>
                       )}
                     </div>
                   </div>

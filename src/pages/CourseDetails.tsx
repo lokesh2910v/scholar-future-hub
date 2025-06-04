@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Star, Users, Clock, PlayCircle, CheckCircle, User } from 'lucide-react';
-import { mockCourses } from '@/data/mockData';
+import { mockCourses, mockEnrollments } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -16,6 +15,7 @@ const CourseDetails = () => {
   const { toast } = useToast();
   
   const course = mockCourses.find(c => c.id === courseId);
+  const isEnrolled = mockEnrollments.some(e => e.courseId === courseId);
 
   if (!course) {
     return (
@@ -38,6 +38,7 @@ const CourseDetails = () => {
       title: "Enrolled Successfully!",
       description: "You can now access the course content.",
     });
+    // Directly navigate to course content
     navigate(`/course/${courseId}`);
   };
 
@@ -51,6 +52,8 @@ const CourseDetails = () => {
       title: "Added to Cart",
       description: "Course has been added to your cart.",
     });
+    // Navigate to cart
+    navigate('/cart');
   };
 
   const totalVideos = course.modules.reduce((total, module) => total + module.videos.length, 0);
@@ -118,16 +121,15 @@ const CourseDetails = () => {
                   </div>
                 </div>
 
-                {user?.role === 'student' ? (
-                  <div className="flex space-x-4">
-                    <Button onClick={handleEnroll} className="flex-1" size="lg">
-                      Enroll Now
-                    </Button>
-                    <Button onClick={handleAddToCart} variant="outline" size="lg">
-                      Add to Cart
-                    </Button>
-                  </div>
-                ) : !user ? (
+                {isEnrolled ? (
+                  <Button 
+                    onClick={() => navigate(`/course/${courseId}`)} 
+                    className="flex-1" 
+                    size="lg"
+                  >
+                    Continue Learning
+                  </Button>
+                ) : (user?.role === 'student' || !user) ? (
                   <div className="flex space-x-4">
                     <Button onClick={handleEnroll} className="flex-1" size="lg">
                       Enroll Now

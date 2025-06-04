@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, Clock, CheckCircle, ArrowRight } from 'lucide-react';
+import { BookOpen, Clock, CheckCircle, ArrowRight, Eye } from 'lucide-react';
 import { mockCourses, mockEnrollments } from '@/data/mockData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +28,10 @@ const MyLearning = () => {
 
   const handleReviewCourse = (courseId: string) => {
     navigate(`/course/${courseId}`);
+  };
+
+  const handleViewDetails = (courseId: string) => {
+    navigate(`/course-details/${courseId}`);
   };
 
   return (
@@ -81,13 +85,22 @@ const MyLearning = () => {
                       </div>
                     </div>
 
-                    <Button 
-                      className="w-full" 
-                      onClick={() => handleContinueLearning(course.id)}
-                    >
-                      Continue Learning
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        className="flex-1" 
+                        onClick={() => handleContinueLearning(course.courseId || course.id)}
+                      >
+                        Continue Learning
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                      
+                      <Button 
+                        variant="outline"
+                        onClick={() => handleViewDetails(course.courseId || course.id)}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -143,13 +156,22 @@ const MyLearning = () => {
                       </div>
                     </div>
 
-                    <Button 
-                      variant="outline" 
-                      className="w-full"
-                      onClick={() => handleReviewCourse(course.id)}
-                    >
-                      Review Course
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1"
+                        onClick={() => handleReviewCourse(course.courseId || course.id)}
+                      >
+                        Review Course
+                      </Button>
+                      
+                      <Button 
+                        variant="outline"
+                        onClick={() => handleViewDetails(course.courseId || course.id)}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
