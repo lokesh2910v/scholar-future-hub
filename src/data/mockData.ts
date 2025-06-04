@@ -61,7 +61,7 @@ export const mockCourses: Course[] = [
       {
         id: 'm1',
         title: 'Introduction to React',
-        description: 'Getting started with React fundamentals',
+        description: 'Getting started with React fundamentals and setting up your development environment',
         courseId: '1',
         videos: [
           {
@@ -84,28 +84,143 @@ export const mockCourses: Course[] = [
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '12:45',
             moduleId: 'm1'
+          },
+          {
+            id: 'v4',
+            title: 'JSX Syntax and Rules',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '14:15',
+            moduleId: 'm1'
           }
         ]
       },
       {
         id: 'm2',
-        title: 'Advanced React Concepts',
-        description: 'Learn hooks, context, and advanced patterns',
+        title: 'React Components and Props',
+        description: 'Learn how to create reusable components and pass data using props',
         courseId: '1',
         videos: [
           {
-            id: 'v4',
-            title: 'Understanding React Hooks',
+            id: 'v5',
+            title: 'Understanding Components',
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
-            duration: '18:30',
+            duration: '16:30',
             moduleId: 'm2'
           },
           {
-            id: 'v5',
-            title: 'Context API Deep Dive',
+            id: 'v6',
+            title: 'Props and PropTypes',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '18:45',
+            moduleId: 'm2'
+          },
+          {
+            id: 'v7',
+            title: 'Component Composition',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '20:10',
+            moduleId: 'm2'
+          }
+        ]
+      },
+      {
+        id: 'm3',
+        title: 'State Management and Hooks',
+        description: 'Master React state management with hooks and understand component lifecycle',
+        courseId: '1',
+        videos: [
+          {
+            id: 'v8',
+            title: 'Introduction to useState Hook',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '22:30',
+            moduleId: 'm3'
+          },
+          {
+            id: 'v9',
+            title: 'useEffect Hook Deep Dive',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '25:15',
+            moduleId: 'm3'
+          },
+          {
+            id: 'v10',
+            title: 'Custom Hooks',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '19:45',
+            moduleId: 'm3'
+          },
+          {
+            id: 'v11',
+            title: 'useContext Hook',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '17:20',
+            moduleId: 'm3'
+          }
+        ]
+      },
+      {
+        id: 'm4',
+        title: 'Advanced React Patterns',
+        description: 'Learn advanced patterns like render props, higher-order components, and performance optimization',
+        courseId: '1',
+        videos: [
+          {
+            id: 'v12',
+            title: 'Higher-Order Components',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '24:30',
+            moduleId: 'm4'
+          },
+          {
+            id: 'v13',
+            title: 'Render Props Pattern',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '21:15',
+            moduleId: 'm4'
+          },
+          {
+            id: 'v14',
+            title: 'React.memo and Performance',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '18:40',
+            moduleId: 'm4'
+          }
+        ]
+      },
+      {
+        id: 'm5',
+        title: 'Building a Complete Project',
+        description: 'Put everything together by building a full-featured React application',
+        courseId: '1',
+        videos: [
+          {
+            id: 'v15',
+            title: 'Project Setup and Planning',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '15:30',
+            moduleId: 'm5'
+          },
+          {
+            id: 'v16',
+            title: 'Building the UI Components',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '28:45',
+            moduleId: 'm5'
+          },
+          {
+            id: 'v17',
+            title: 'Adding State Management',
+            youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
+            duration: '26:20',
+            moduleId: 'm5'
+          },
+          {
+            id: 'v18',
+            title: 'Testing and Deployment',
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '22:15',
-            moduleId: 'm2'
+            moduleId: 'm5'
           }
         ]
       }
@@ -127,24 +242,24 @@ export const mockCourses: Course[] = [
     approved: true,
     modules: [
       {
-        id: 'm3',
+        id: 'm6',
         title: 'ES6 Fundamentals',
         description: 'Learn the core ES6 features',
         courseId: '2',
         videos: [
           {
-            id: 'v6',
+            id: 'v19',
             title: 'Arrow Functions and Template Literals',
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '14:20',
-            moduleId: 'm3'
+            moduleId: 'm6'
           },
           {
-            id: 'v7',
+            id: 'v20',
             title: 'Destructuring and Spread Operator',
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '16:45',
-            moduleId: 'm3'
+            moduleId: 'm6'
           }
         ]
       }
@@ -166,17 +281,17 @@ export const mockCourses: Course[] = [
     approved: false,
     modules: [
       {
-        id: 'm4',
+        id: 'm7',
         title: 'Design Principles',
         description: 'Understanding fundamental design concepts',
         courseId: '3',
         videos: [
           {
-            id: 'v8',
+            id: 'v21',
             title: 'Color Theory Basics',
             youtubeUrl: 'https://www.youtube.com/watch?v=dGcsHMXbSOA',
             duration: '20:30',
-            moduleId: 'm4'
+            moduleId: 'm7'
           }
         ]
       }
@@ -190,9 +305,9 @@ export const mockEnrollments: Enrollment[] = [
     studentId: 'student1',
     courseId: '1',
     enrolledAt: new Date('2024-01-15'),
-    progress: 65,
+    progress: 35,
     completed: false,
-    watchedVideos: ['v1', 'v2']
+    watchedVideos: ['v1', 'v2', 'v5', 'v6']
   },
   {
     id: 'e2',
@@ -201,7 +316,7 @@ export const mockEnrollments: Enrollment[] = [
     enrolledAt: new Date('2024-02-01'),
     progress: 100,
     completed: true,
-    watchedVideos: ['v6', 'v7']
+    watchedVideos: ['v19', 'v20']
   }
 ];
 

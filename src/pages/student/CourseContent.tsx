@@ -1,19 +1,21 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { PlayCircle, Clock, CheckCircle, Lock, ArrowLeft } from 'lucide-react';
-import { mockCourses } from '@/data/mockData';
+import { mockCourses, mockEnrollments } from '@/data/mockData';
 
 const CourseContent = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const [watchedVideos, setWatchedVideos] = useState<string[]>(['v1']);
   
   const course = mockCourses.find(c => c.id === courseId);
+  const enrollment = mockEnrollments.find(e => e.courseId === courseId);
+  
+  const [watchedVideos, setWatchedVideos] = useState<string[]>(enrollment?.watchedVideos || []);
   
   if (!course) {
     return (
@@ -108,7 +110,11 @@ const CourseContent = () => {
                 <div className="space-y-3">
                   {module.videos.map((video, videoIndex) => {
                     const isWatched = watchedVideos.includes(video.id);
-                    const isLocked = videoIndex > 0 && !watchedVideos.includes(module.videos[videoIndex - 1].id);
+                    const isFirstVideo = moduleIndex === 0 && videoIndex === 0;
+                    const prevVideoWatched = videoIndex === 0 ? 
+                      (moduleIndex === 0 ? true : course.modules[moduleIndex - 1].videos.every(v => watchedVideos.includes(v.id))) :
+                      watchedVideos.includes(module.videos[videoIndex - 1].id);
+                    const isLocked = !isFirstVideo && !prevVideoWatched;
                     
                     return (
                       <div 

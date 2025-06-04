@@ -1,20 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, PlayCircle, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
-import { mockCourses } from '@/data/mockData';
+import { mockCourses, mockEnrollments } from '@/data/mockData';
 import { useToast } from '@/hooks/use-toast';
 
 const CoursePlayer = () => {
   const { courseId, videoId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [watchedVideos, setWatchedVideos] = useState<string[]>(['v1']);
   
   const course = mockCourses.find(c => c.id === courseId);
+  const enrollment = mockEnrollments.find(e => e.courseId === courseId);
+  
+  const [watchedVideos, setWatchedVideos] = useState<string[]>(enrollment?.watchedVideos || []);
   
   if (!course) {
     return (
@@ -50,7 +52,8 @@ const CoursePlayer = () => {
 
   const handleMarkAsWatched = () => {
     if (!watchedVideos.includes(currentVideo.id)) {
-      setWatchedVideos([...watchedVideos, currentVideo.id]);
+      const newWatchedVideos = [...watchedVideos, currentVideo.id];
+      setWatchedVideos(newWatchedVideos);
       toast({
         title: "Video marked as watched!",
         description: "Great job! Keep up the learning momentum.",
